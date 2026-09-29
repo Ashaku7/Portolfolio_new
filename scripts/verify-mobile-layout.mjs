@@ -1,0 +1,12 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import {makePreview} from './preview-built-room.mjs';
+const b=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
+try{for(const [width,height] of [[320,568],[375,667],[430,932],[844,390]]){
+ const p=await makePreview(b,{viewport:{width,height},isMobile:true,hasTouch:true});const errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto('http://room.preview/',{waitUntil:'networkidle',timeout:90000});await p.getByRole('button',{name:'STEP INSIDE',exact:true}).click({timeout:60000});await p.waitForSelector('.opening-gate',{state:'detached'});await p.waitForFunction(()=>document.querySelector('canvas').dataset.settled==='room');await p.waitForTimeout(900);
+ const viewport=await p.evaluate(()=>({w:innerWidth,h:innerHeight}));assert.equal(viewport.w,width);assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+ for(const el of await p.locator('.experience-header nav button,.room-toolbar button,.ripple-pin').all()){const r=await el.boundingBox();assert.ok(r&&r.x>=-1&&r.y>=0&&r.x+r.width<=width+1&&r.y+r.height<=height+1,'overview control must fit: '+await el.getAttribute('aria-label'));}
+ await p.screenshot({path:`artifacts/mobile-overview-${width}.png`});
+ for(const name of ['About','Projects','Skills','Contact']){await p.getByRole('button',{name,exact:true}).click();await p.waitForTimeout(1100);const panel=p.locator('.room-panel');const r=await panel.boundingBox();assert.ok(r.x>=0&&r.x+r.width<=width+1&&r.y>=0&&r.y+r.height<=height+1);assert.equal(await panel.evaluate(e=>e.scrollWidth>e.clientWidth+1),false,'panel overflow: '+name);assert.ok(await panel.locator('.panel-close').isVisible());await p.screenshot({path:`artifacts/mobile-${name.toLowerCase()}-${width}.png`});await panel.evaluate(e=>e.scrollTop=e.scrollHeight);const final=panel.locator(name==='About'?'.person-actions':name==='Projects'?'.project-pagination':name==='Skills'?'.formation-line:last-child':'.contact-socials');const f=await final.boundingBox();assert.ok(f.y>=r.y&&f.y+f.height<=r.y+r.height+2,'last content reachable: '+name);await panel.locator('.panel-close').click();}
+ assert.deepEqual(errors,[]);console.log('PASS',width,height,'touch layouts, all five markers, nav, all story panels, readable scroll end, close buttons, no overflow/errors');await p.close();
+}}finally{await b.close()}

@@ -1,0 +1,7 @@
+﻿node_modules/
+.next/
+*.tsbuildinfo
+.env*.local
+artifacts/
+
+.next-pitch/
