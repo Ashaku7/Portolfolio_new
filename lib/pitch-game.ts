@@ -11,7 +11,7 @@ export class PitchGame {
  status:Status='lobby';beforePause:Status='playing';time=0;score=0;round=1;index=0;hit=false;holding=false;countdown=3;reason='';feedback='';best=0;mode:'juggle'|'celebrate'='juggle';
  celebrationShown=0;celebrationProgress=0;celebrationAuto=false;celebrationElapsed=0;celebrationRun=0;
  get cue(){return CUES[this.index];}
- get speed(){return Math.min(.8,.35+Math.floor(this.score/10)*.025);}
+ get speed(){return Math.min(.8,.42+Math.floor(this.score/10)*.025);}
  get window(){return this.cue?.target==='head'?.115:.17;}
  get active(){return this.status==='playing';}
  get canHit(){return this.active&&!!this.cue&&!this.hit&&Math.abs(this.time-this.cue.time)<=this.window;}

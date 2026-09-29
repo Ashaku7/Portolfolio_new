@@ -22,3 +22,19 @@
  .experience.scene-beside-panel .room-canvas{top:66px;left:0;right:52%;width:48%;height:calc(100% - 66px);bottom:0}.experience.scene-beside-panel .room-vignette{top:66px;right:52%;bottom:0}.experience.scene-beside-panel .room-panel{top:72px;left:48%;right:8px;width:auto;bottom:8px;max-width:none;max-height:none;padding:14px 16px;border-radius:14px}.scene-beside-panel .panel-top{top:-14px}.tour-controls.tour-floating{bottom:8px;left:8px;width:calc(48% - 16px);min-width:0}.tour-floating>span{font-size:7px}.tour-floating .tour-next{font-size:11px;padding:9px}.has-panel .stories-explored{display:none}.room-panel .player-photo-card{height:220px}.room-map{bottom:76px;max-height:calc(100dvh - 150px)}
  .pitch-launch{top:82px;left:20px}.pitch-launch h1{font-size:36px}.pitch-header{top:10px}.pitch-result{left:5vw;right:auto;width:40vw;bottom:18px;max-height:calc(100dvh - 88px)}.pitch-callout{left:auto;right:20px;bottom:75px;max-width:35vw}.pitch-score{top:80px;left:20px}.game-rules>div{top:65px;max-height:calc(100dvh - 85px)}.opening-console{bottom:18px;font-size:8px}.opening-enter{bottom:45px}.opening-identity{top:15px}
 }
+
+/* Result cards must reset the desktop horizontal translation on small screens. */
+@media(max-width:767px),(max-width:950px) and (max-height:550px){
+ .pitch-result{box-sizing:border-box;top:calc(50% + 20px);left:14px;right:14px;bottom:auto;transform:translateY(-50%);width:auto;max-width:440px;margin-inline:auto;max-height:calc(100dvh - 150px - env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;padding:22px;background:#101d25;scrollbar-width:thin}
+ .pitch-result h2{font-size:clamp(25px,7vw,34px);line-height:1.15;margin-bottom:12px}
+ .pitch-result>p:not(.pitch-kicker){font-size:14px;line-height:1.6;color:#edf1ee;overflow-wrap:anywhere}
+ .pitch-result .pitch-kicker{font-size:9px;margin-bottom:12px}
+ .pitch-result>strong{font-size:46px;line-height:1.15;margin:16px 0}
+ .pitch-result small{display:inline-block;font-size:12px}
+ .pitch-result .pitch-choices{gap:8px}
+ .pitch-result .pitch-choices button{flex:1 1 105px;min-height:44px;justify-content:center;padding:12px;font-size:12px;gap:8px}
+}
+@media(max-width:950px) and (max-height:550px){
+ .pitch-result{top:calc(50% + 26px);max-height:calc(100dvh - 90px - env(safe-area-inset-bottom));padding:16px 20px}
+ .pitch-result h2{font-size:25px;margin-bottom:8px}.pitch-result>strong{font-size:34px;margin:10px 0}.pitch-result .pitch-kicker{margin-bottom:8px}
+}
